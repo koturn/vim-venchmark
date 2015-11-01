@@ -10,75 +10,74 @@ set cpo&vim
 
 
 function! venchmark#test#eval(n, expr, ...) abort
-  let s:start = reltime()
+  let start = reltime()
   for i in range(1, a:n)
     let _ = eval(a:expr)
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#equals(n, x, y) abort
-  let s:start = reltime()
+  let start = reltime()
   for i in range(1, a:n)
     let _ = a:x == a:y
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#string_equals(n, x, y) abort
-  let s:start = reltime()
+  let start = reltime()
   for i in range(1, a:n)
     let _ = a:x ==# a:y
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#regex_equals(n, text, pattern) abort
-  let s:start = reltime()
+  let start = reltime()
   for i in range(1, a:n)
     let _ = a:text =~# a:pattern
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#match(n, text, pattern) abort
-  let s:start = reltime()
+  let start = reltime()
   for i in range(1, a:n)
     call match(a:text, a:pattern)
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#call(n, function, ...) abort
   if a:0 > 0
-    let s:start = reltime()
+    let start = reltime()
     for i in range(1, a:n)
       call call(a:function, a:000)
     endfor
   else
-    let s:start = reltime()
+    let start = reltime()
     for i in range(1, a:n)
       call a:function()
     endfor
   endif
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#execute(n, cmd) abort
-  let s:start = reltime()
+  let start = reltime()
   for i in range(1, a:n)
     execute a:cmd
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 function! venchmark#test#script(n, src) abort
-  let src = expand(a:src)
-  let s:start = reltime()
+  let [src, start] = [expand(a:src), reltime()]
   for i in range(1, a:n)
     source `=src`
   endfor
-  return str2float(reltimestr(reltime(s:start)))
+  return str2float(reltimestr(reltime(start)))
 endfunction
 
 
