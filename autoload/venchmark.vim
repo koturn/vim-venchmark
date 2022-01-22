@@ -28,7 +28,7 @@ let s:Venchmarker = {}
 function! s:Venchmarker.run(...) abort dict
   let n = a:0 > 0 ? a:1 : 1
   let funcs = filter(keys(filter(copy(self), 'type(v:val) == s:TYPE_FUNCREF')), 'v:val !=# "run"')
-  let nameformat = '  %' . max(map(copy(funcs), 'strlen(v:val)')) . 's'
+  let maxlen = max(map(copy(funcs), 'strlen(v:val)'))
   let time_dict = {}
   for funcname in funcs
     let time_dict[funcname] = 0.0
@@ -41,12 +41,12 @@ function! s:Venchmarker.run(...) abort dict
       call self[funcname]()
       let time = str2float(reltimestr(reltime(start)))
       let time_dict[funcname] += time
-      echomsg printf(nameformat . ': %f', funcname, time)
+      echomsg printf('  %*s: %f', maxlen, funcname, time)
     endfor
   endfor
   echomsg 'Average:'
   for funcname in funcs
-    echomsg printf(nameformat . ': %f', funcname, time_dict[funcname] / n)
+    echomsg printf('  %*s: %f', maxlen, funcname, time_dict[funcname] / n)
   endfor
 endfunction
 
