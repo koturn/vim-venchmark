@@ -45,9 +45,19 @@ function! s:Venchmarker.run(...) abort dict
     endfor
   endfor
   echomsg 'Average:'
+  call map(time_dict, 'v:val / n')
+  let basetime = s:maxf(values(time_dict))
   for funcname in funcs
-    echomsg printf('  %*s: %f', maxlen, funcname, time_dict[funcname] / n)
+    echomsg printf('  %*s: %f (x%.3f)', maxlen, funcname, time_dict[funcname], basetime / time_dict[funcname])
   endfor
+endfunction
+
+function! s:maxf(listf) abort
+  let maxval = -1.0e100
+  for val in a:listf
+    let maxval = maxval < val ? val : maxval
+  endfor
+  return maxval
 endfunction
 
 
