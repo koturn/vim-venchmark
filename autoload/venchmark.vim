@@ -8,7 +8,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:TYPE_FUNCREF = type(function('function'))
+let s:t_func = type(function('function'))
 let s:venchmarker_nr = 0
 
 function! venchmark#new(...) abort
@@ -27,7 +27,7 @@ let s:Venchmarker = {}
 
 function! s:Venchmarker.run(...) abort dict
   let n = a:0 > 0 ? a:1 : 1
-  let funcs = filter(keys(filter(copy(self), 'type(v:val) == s:TYPE_FUNCREF')), 'v:val !=# "run"')
+  let funcs = filter(keys(filter(copy(self), 'type(v:val) == s:t_func')), 'v:val !=# "run"')
   let maxlen = max(map(copy(funcs), 'strlen(v:val)'))
   let time_dict = {}
   for funcname in funcs
