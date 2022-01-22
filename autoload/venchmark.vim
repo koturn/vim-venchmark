@@ -27,7 +27,7 @@ let s:Venchmarker = {}
 
 function! s:Venchmarker.run(...) abort dict
   let n = a:0 > 0 ? a:1 : 1
-  let funcs = filter(keys(filter(copy(self), 'type(v:val) == s:t_func')), 'v:val !=# "run"')
+  let funcs = keys(filter(copy(self), 'type(v:val) == s:t_func && v:key !=# "run"'))
   let maxlen = max(map(copy(funcs), 'strlen(v:val)'))
   let time_dict = {}
   for funcname in funcs
