@@ -11,7 +11,7 @@ set cpo&vim
 let s:t_func = type(function('function'))
 let s:venchmarker_nr = 0
 
-function! venchmark#new(...) abort
+function! venchmark#new(...) abort " {{{
   let venchmarker = copy(s:Venchmarker)
   if a:0 == 0
     let venchmarker.__name = 'Venchmarker_' . s:venchmarker_nr
@@ -20,12 +20,12 @@ function! venchmark#new(...) abort
     let venchmarker.__name = a:1
   endif
   return venchmarker
-endfunction
+endfunction " }}}
 
 
 let s:Venchmarker = {}
 
-function! s:Venchmarker.run(...) abort dict
+function! s:Venchmarker.run(...) abort dict " {{{
   let n = a:0 > 0 ? a:1 : 1
   let funcs = keys(filter(copy(self), 'type(v:val) == s:t_func && v:key !=# "run"'))
   let maxlen = max(map(copy(funcs), 'strlen(v:val)'))
@@ -51,15 +51,15 @@ function! s:Venchmarker.run(...) abort dict
   for funcname in funcs
     echomsg printf('  %*s: %f (x%.3f)', maxlen, funcname, time_dict[funcname], basetime / time_dict[funcname])
   endfor
-endfunction
+endfunction " }}}
 
-function! s:maxf(listf) abort
+function! s:maxf(listf) abort " {{{
   let maxval = -1.0e100
   for val in a:listf
     let maxval = maxval < val ? val : maxval
   endfor
   return maxval
-endfunction
+endfunction " }}}
 
 
 let &cpo = s:save_cpo
